@@ -1,0 +1,156 @@
+<!-- DAA Part 1, interactive. Paste into Blogger HTML view. Title: "Algorithm Basics: Race the Big-O Curves (Interactive)" -->
+<style>
+.dx{position:relative;background:#0b0b1f;color:#e5e7eb;font:15.5px/1.75 'Segoe UI',Roboto,Arial,sans-serif;padding:18px;border-radius:22px;overflow:hidden}
+.dx *{box-sizing:border-box}
+.dx #prog{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,#22d3ee,#a78bfa,#f472b6);z-index:99}
+.dx.js .rv{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
+.dx.js .rv.on{opacity:1;transform:none}
+.dx .hero{text-align:center;padding:54px 16px 44px;border-radius:18px;background:radial-gradient(circle at 20% 20%,#4c1d95 0,transparent 45%),radial-gradient(circle at 80% 30%,#9d174d 0,transparent 45%),radial-gradient(circle at 50% 100%,#0e7490 0,transparent 50%),#0b0b1f;border:1px solid #312e81;animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 50px rgba(167,139,250,.35)}}
+.dx .hero small{color:#22d3ee;letter-spacing:3px;font-weight:700;font-size:12px}
+.dx .hero h1{font-size:40px;line-height:1.15;margin:12px 0;background:linear-gradient(90deg,#22d3ee,#a78bfa,#f472b6,#22d3ee);background-size:300%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 6s linear infinite}
+@keyframes flow{to{background-position:300%}}
+.dx .hero p{margin:0 auto;max-width:520px;color:#c4b5fd}
+.dx h2{font-size:25px;margin:46px 0 12px;color:#fff}
+.dx h2 span{display:inline-block;background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b0b1f;font-weight:800;border-radius:10px;padding:0 10px;margin-right:10px}
+.dx p{color:#d1d5db}
+.dx code{background:#1e1b4b;color:#67e8f9;padding:1px 6px;border-radius:5px;font:14px Consolas,monospace}
+.dx .glass{background:rgba(255,255,255,.05);border:1px solid rgba(167,139,250,.35);border-radius:16px;padding:16px;margin:14px 0}
+.dx .grid{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+.dx .grid .glass{flex:1 1 160px;margin:0;transition:.3s}
+.dx .grid .glass:hover{transform:translateY(-6px) rotate(-1deg);border-color:#22d3ee;box-shadow:0 10px 30px rgba(34,211,238,.25)}
+.dx .grid b{color:#22d3ee;font-size:18px}
+.dx pre{background:#050510;border:1px solid #312e81;border-radius:12px;padding:14px;margin:12px 0;color:#e5e7eb;font:14px Consolas,monospace;overflow-x:auto}
+.dx .k{color:#c4b5fd}.dx .c{color:#6b7280;font-style:italic}.dx .n{color:#fbbf24}
+.dx button{border:0;cursor:pointer;font-weight:700;color:#0b0b1f;padding:9px 18px;margin:4px 4px 4px 0;border-radius:30px;background:linear-gradient(135deg,#22d3ee,#a78bfa);transition:.2s}
+.dx button:hover{transform:scale(1.06);box-shadow:0 0 18px rgba(167,139,250,.6)}
+.dx button.b2{background:linear-gradient(135deg,#f472b6,#fbbf24)}
+.dx input[type=range]{width:100%;accent-color:#a78bfa}
+.dx .row{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:14px}
+.dx .row em{width:78px;font-style:normal;font-weight:700}
+.dx .row .tr{flex:1;background:#050510;border-radius:8px;height:18px;overflow:hidden}
+.dx .row .tr i{display:block;height:100%;width:0;border-radius:8px;transition:width .4s}
+.dx .row b{width:120px;text-align:right;color:#fbbf24}
+.dx .stk{display:flex;flex-direction:column-reverse;align-items:center;min-height:190px;justify-content:flex-start;background:#050510;border:1px solid #312e81;border-radius:12px;padding:8px;max-width:200px;margin:8px auto}
+.dx .stk div{width:100%;text-align:center;font-weight:700;color:#0b0b1f;padding:6px;margin:2px;border-radius:8px;background:linear-gradient(135deg,#a78bfa,#22d3ee)}
+.dx .stk div:last-child{background:linear-gradient(135deg,#fbbf24,#f472b6)}
+.dx .msg{text-align:center;color:#67e8f9;min-height:26px;font-weight:600}
+.dx svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.dx table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid #312e81;border-radius:12px;overflow:hidden;margin:14px 0}
+.dx th{background:#312e81;color:#fff;padding:10px;text-align:left}
+.dx td{padding:9px 10px;border-top:1px solid #1e1b4b;color:#d1d5db}
+.dx tr:nth-child(even) td{background:rgba(255,255,255,.03)}
+.dx details{background:rgba(255,255,255,.05);border:1px solid rgba(167,139,250,.35);border-radius:12px;margin:10px 0;padding:10px 16px}
+.dx summary{cursor:pointer;font-weight:700;color:#67e8f9}
+.dx .nav{text-align:right;margin-top:34px}
+.dx .nav a{display:inline-block;background:linear-gradient(135deg,#f472b6,#a78bfa);color:#0b0b1f;font-weight:800;padding:12px 28px;border-radius:30px;text-decoration:none}
+@media(prefers-reduced-motion:reduce){.dx *{animation:none!important;transition:none!important}}
+</style>
+
+<div class="dx" id="dx">
+<div id="prog"></div>
+
+<div class="hero">
+<small>DAA SERIES &middot; PART 1 &middot; INTERACTIVE</small>
+<h1>Algorithm Basics</h1>
+<p>Slide, push, pop and traverse. Learn how algorithms are measured by playing with them.</p>
+</div>
+
+<div class="glass rv" style="margin-top:20px"><b style="color:#fbbf24">Puzzle:</b> 1,000,000 numbers, is 73 among them? A one-by-one scan and a binary search both work, but they are not equally good. This series teaches you to prove why.</div>
+
+<h2 class="rv"><span>1</span>What is an Algorithm?</h2>
+<p class="rv">A finite, precise procedure for solving a problem, like a recipe. It must have all five traits:</p>
+<div class="grid rv">
+<div class="glass"><b>Input</b><br>Zero or more values</div>
+<div class="glass"><b>Output</b><br>At least one result</div>
+<div class="glass"><b>Definiteness</b><br>Unambiguous steps</div>
+<div class="glass"><b>Finiteness</b><br>Always terminates</div>
+<div class="glass"><b>Effectiveness</b><br>Pencil-and-paper simple</div>
+</div>
+
+<h2 class="rv"><span>2</span>The Big-O Race</h2>
+<p class="rv">We count steps, not seconds, because stopwatch time depends on the machine. Drag the slider to change the input size <i>n</i> and watch how many steps each class needs (bars use a log scale so everything fits).</p>
+<div class="glass rv">
+<div class="row"><em>n =</em><input type="range" id="nr" min="1" max="1000" value="16"><b id="nv">16</b></div>
+<div id="race"></div>
+</div>
+<p class="rv"><b>Loop rules:</b> nested loops <i>multiply</i>, sequential loops <i>add</i>, a loop whose variable halves is <i>log n</i>.</p>
+<pre class="rv"><span class="k">for</span> (i = 1; i &lt;= n; i++)         <span class="c">// O(n)</span>
+    <span class="k">for</span> (j = 1; j &lt;= n; j++)     <span class="c">// n x n = O(n^2)</span>
+        work();
+<span class="k">for</span> (i = n; i &gt; 0; i = i / 2)   <span class="c">// halves each time: O(log n)</span>
+    work();</pre>
+<div class="grid rv">
+<div class="glass"><b>O (Big-O)</b><br>The <i>ceiling</i>: f(n) &le; c&middot;g(n)</div>
+<div class="glass"><b>&Omega; (Omega)</b><br>The <i>floor</i>: f(n) &ge; c&middot;g(n)</div>
+<div class="glass"><b>&Theta; (Theta)</b><br>The <i>sandwich</i>: c&#8321;g(n) &le; f(n) &le; c&#8322;g(n)</div>
+</div>
+<p class="rv"><b>Space complexity</b> counts instruction space, the environmental stack and data space. Fixed space is O(1) (iterative factorial); variable space grows with n (an array is O(n)). Input space + auxiliary space = total space.</p>
+
+<h2 class="rv"><span>3</span>Stack Playground (LIFO)</h2>
+<div class="glass rv">
+<p>Capacity is 5. Try to push past the top and pop from an empty stack to trigger <b>overflow</b> and <b>underflow</b>.</p>
+<div class="stk" id="stk"></div>
+<div class="msg" id="smsg">Stack is empty</div>
+<div style="text-align:center"><button onclick="spush()">Push</button><button class="b2" onclick="spop()">Pop</button><button onclick="speek()">Peek</button></div>
+</div>
+<pre class="rv">Infix:    3 + 8 - 9 / 8
+Postfix:  3 8 + 9 8 / -
+Evaluate  2 3 4 * +  :  3*4 = <span class="n">12</span>, then 12+2 = <span class="n">14</span></pre>
+<p class="rv">A <b>queue</b> is the opposite (FIFO): <code>enqueue</code> at the rear, <code>dequeue</code> from the front, like a ticket line. Stacks power undo and recursion; queues power scheduling and breadth-first search.</p>
+
+<h2 class="rv"><span>4</span>Tree Traversal Player</h2>
+<div class="glass rv">
+<p>Pick an order and watch the nodes light up. In array form, the node at index <i>i</i> has children at <code>2i+1</code> and <code>2i+2</code>.</p>
+<svg viewBox="0 0 320 160" width="400">
+<g stroke="#a78bfa" stroke-width="2"><path d="M160 30L90 80M160 30L230 80M90 80L55 130M90 80L125 130M230 80L195 130M230 80L265 130"/></g>
+<g id="tn"><circle cx="160" cy="30" r="17"/><circle cx="90" cy="80" r="17"/><circle cx="230" cy="80" r="17"/><circle cx="55" cy="130" r="17"/><circle cx="125" cy="130" r="17"/><circle cx="195" cy="130" r="17"/><circle cx="265" cy="130" r="17"/></g>
+<g fill="#fff" font-size="13" font-weight="700" text-anchor="middle"><text x="160" y="35">50</text><text x="90" y="85">30</text><text x="230" y="85">70</text><text x="55" y="135">20</text><text x="125" y="135">40</text><text x="195" y="135">60</text><text x="265" y="135">80</text></g>
+</svg>
+<div class="msg" id="tseq">Choose a traversal</div>
+<div style="text-align:center"><button onclick="tplay('In',[3,1,4,0,5,2,6])">Inorder (L, N, R)</button><button class="b2" onclick="tplay('Pre',[0,1,3,4,2,5,6])">Preorder (N, L, R)</button><button onclick="tplay('Post',[3,4,1,5,6,2,0])">Postorder (L, R, N)</button></div>
+</div>
+
+<h2 class="rv"><span>5</span>Sets, Union-Find and Dictionaries</h2>
+<div class="grid rv">
+<div class="glass"><b>Set</b><br>Distinct items; two sets are <i>disjoint</i> if they share none.</div>
+<div class="glass"><b>Union-Find</b><br>Tracks which group an element is in and merges groups fast. Kruskal's algorithm (Part 3) uses it.</div>
+<div class="glass"><b>Dictionary</b><br>Unique keys paired with values, like a phone book.</div>
+</div>
+
+<h2 class="rv"><span>6</span>Test Yourself</h2>
+<details class="rv"><summary>Complexity of a loop whose variable is halved every iteration?</summary><p><b>O(log n).</b></p></details>
+<details class="rv"><summary>Evaluate the postfix expression 5 1 2 + 4 * + 3 -</summary><p><b>14.</b> 1+2 = 3; 3*4 = 12; 5+12 = 17; 17-3 = 14.</p></details>
+<details class="rv"><summary>Left child of the node at array index 4?</summary><p><b>Index 9</b> (2*4 + 1).</p></details>
+
+<div class="nav"><a href="#">Next: Divide and Conquer &rarr;</a></div>
+</div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},dx=$('dx');
+dx.className+=' js';
+window.addEventListener('scroll',function(){var h=document.body.scrollHeight-window.innerHeight;$('prog').style.width=(h>0?window.scrollY/h*100:0)+'%'});
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.1});
+dx.querySelectorAll('.rv').forEach(function(el){io.observe(el)})}else{dx.querySelectorAll('.rv').forEach(function(el){el.classList.add('on')})}
+
+var names=['O(1)','O(log n)','O(n)','O(n log n)','O(n^2)'],cols=['#34d399','#22d3ee','#a78bfa','#fbbf24','#f87171'],race=$('race');
+names.forEach(function(nm,i){var r=document.createElement('div');r.className='row';r.innerHTML='<em style="color:'+cols[i]+'">'+nm+'</em><div class="tr"><i id="bar'+i+'" style="background:'+cols[i]+'"></i></div><b id="val'+i+'"></b>';race.appendChild(r)});
+function upd(){var n=+$('nr').value;$('nv').textContent=n;var lg=Math.log(n)/Math.log(2),v=[1,lg,n,n*lg,n*n],mx=Math.log(n*n+2);
+v.forEach(function(x,i){$('bar'+i).style.width=Math.max(2,Math.log(x+1)/mx*100)+'%';$('val'+i).textContent=Math.round(x).toLocaleString()})}
+$('nr').oninput=upd;upd();
+
+var st=[],cap=5,cnt=0;
+function rs(){var s=$('stk');s.innerHTML='';st.forEach(function(v){var d=document.createElement('div');d.textContent=v;s.appendChild(d)})}
+window.spush=function(){if(st.length===cap){$('smsg').textContent='OVERFLOW: the stack is full!';return}cnt++;st.push(cnt*10);rs();$('smsg').textContent='Pushed '+cnt*10+' (top = '+cnt*10+')'};
+window.spop=function(){if(!st.length){$('smsg').textContent='UNDERFLOW: nothing to pop!';return}var v=st.pop();rs();$('smsg').textContent='Popped '+v+(st.length?' (top = '+st[st.length-1]+')':' (now empty)')};
+window.speek=function(){$('smsg').textContent=st.length?'Peek: top is '+st[st.length-1]+' (not removed)':'Nothing to peek: stack is empty'};
+rs();
+
+var nodes=$('tn').getElementsByTagName('circle'),vals=[50,30,70,20,40,60,80],tb=false;
+function treset(){for(var i=0;i!==nodes.length;i++)nodes[i].setAttribute('fill','#6d28d9')}
+treset();
+window.tplay=function(nm,order){if(tb)return;tb=true;treset();var out=[];$('tseq').textContent=nm+'order: ';
+order.forEach(function(idx,k){setTimeout(function(){nodes[idx].setAttribute('fill','#f59e0b');out.push(vals[idx]);$('tseq').textContent=nm+'order: '+out.join('  ');if(k===order.length-1)tb=false},k*650)})};
+})();
+</script>

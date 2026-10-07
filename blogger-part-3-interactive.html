@@ -1,0 +1,155 @@
+<!-- DAA Part 3, interactive. Paste into Blogger HTML view. Title: "The Greedy Method: Build a Spanning Tree Step by Step (Interactive)" -->
+<style>
+.dx{position:relative;background:#0b0b1f;color:#e5e7eb;font:15.5px/1.75 'Segoe UI',Roboto,Arial,sans-serif;padding:18px;border-radius:22px;overflow:hidden}
+.dx *{box-sizing:border-box}
+.dx #prog{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,#22d3ee,#a78bfa,#f472b6);z-index:99}
+.dx.js .rv{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
+.dx.js .rv.on{opacity:1;transform:none}
+.dx .hero{text-align:center;padding:54px 16px 44px;border-radius:18px;background:radial-gradient(circle at 20% 20%,#4c1d95 0,transparent 45%),radial-gradient(circle at 80% 30%,#9d174d 0,transparent 45%),radial-gradient(circle at 50% 100%,#0e7490 0,transparent 50%),#0b0b1f;border:1px solid #312e81;animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 50px rgba(167,139,250,.35)}}
+.dx .hero small{color:#22d3ee;letter-spacing:3px;font-weight:700;font-size:12px}
+.dx .hero h1{font-size:40px;line-height:1.15;margin:12px 0;background:linear-gradient(90deg,#22d3ee,#a78bfa,#f472b6,#22d3ee);background-size:300%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 6s linear infinite}
+@keyframes flow{to{background-position:300%}}
+.dx .hero p{margin:0 auto;max-width:520px;color:#c4b5fd}
+.dx h2{font-size:25px;margin:46px 0 12px;color:#fff}
+.dx h2 span{display:inline-block;background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b0b1f;font-weight:800;border-radius:10px;padding:0 10px;margin-right:10px}
+.dx p{color:#d1d5db}
+.dx code{background:#1e1b4b;color:#67e8f9;padding:1px 6px;border-radius:5px;font:14px Consolas,monospace}
+.dx .glass{background:rgba(255,255,255,.05);border:1px solid rgba(167,139,250,.35);border-radius:16px;padding:16px;margin:14px 0}
+.dx .grid{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+.dx .grid .glass{flex:1 1 160px;margin:0;transition:.3s}
+.dx .grid .glass:hover{transform:translateY(-6px) rotate(-1deg);border-color:#22d3ee;box-shadow:0 10px 30px rgba(34,211,238,.25)}
+.dx .grid b{color:#22d3ee;font-size:18px}
+.dx pre{background:#050510;border:1px solid #312e81;border-radius:12px;padding:14px;margin:12px 0;color:#e5e7eb;font:14px Consolas,monospace;overflow-x:auto}
+.dx .k{color:#c4b5fd}.dx .n{color:#fbbf24}
+.dx button{border:0;cursor:pointer;font-weight:700;color:#0b0b1f;padding:9px 18px;margin:4px 4px 4px 0;border-radius:30px;background:linear-gradient(135deg,#22d3ee,#a78bfa);transition:.2s}
+.dx button:hover{transform:scale(1.06);box-shadow:0 0 18px rgba(167,139,250,.6)}
+.dx button.b2{background:linear-gradient(135deg,#f472b6,#fbbf24)}
+.dx input[type=range]{width:100%;accent-color:#a78bfa}
+.dx .row{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:14px}
+.dx .row em{width:78px;font-style:normal;font-weight:700}
+.dx .row .tr{flex:1;background:#050510;border-radius:8px;height:18px;overflow:hidden}
+.dx .row .tr i{display:block;height:100%;width:0;border-radius:8px;transition:width .4s}
+.dx .row b{width:120px;text-align:right;color:#fbbf24}
+.dx .msg{text-align:center;color:#67e8f9;min-height:26px;font-weight:600}
+.dx .warn{background:rgba(248,113,113,.12);border:1px solid #f87171;border-radius:14px;padding:12px 16px;margin:14px 0}
+.dx svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.dx table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid #312e81;border-radius:12px;overflow:hidden;margin:14px 0}
+.dx th{background:#312e81;color:#fff;padding:10px;text-align:left}
+.dx td{padding:9px 10px;border-top:1px solid #1e1b4b;color:#d1d5db}
+.dx tr:nth-child(even) td{background:rgba(255,255,255,.03)}
+.dx details{background:rgba(255,255,255,.05);border:1px solid rgba(167,139,250,.35);border-radius:12px;margin:10px 0;padding:10px 16px}
+.dx summary{cursor:pointer;font-weight:700;color:#67e8f9}
+.dx .nav{text-align:right;margin-top:34px}
+.dx .nav a{display:inline-block;background:linear-gradient(135deg,#f472b6,#a78bfa);color:#0b0b1f;font-weight:800;padding:12px 28px;border-radius:30px;text-decoration:none}
+@media(prefers-reduced-motion:reduce){.dx *{animation:none!important;transition:none!important}}
+</style>
+
+<div class="dx" id="dx">
+<div id="prog"></div>
+
+<div class="hero">
+<small>DAA SERIES &middot; PART 3 &middot; INTERACTIVE</small>
+<h1>The Greedy Method</h1>
+<p>Always grab the best thing right now. Build a spanning tree edge by edge and see exactly when greedy works.</p>
+</div>
+
+<div class="glass rv" style="margin-top:20px"><b style="color:#fbbf24">Analogy:</b> at a buffet with one small plate, you grab the tastiest thing in front of you, then the next, and never put anything back. That is a greedy algorithm.</div>
+
+<h2 class="rv"><span>1</span>The General Method</h2>
+<div class="grid rv">
+<div class="glass"><b>Candidate set</b><br>The pool of options</div>
+<div class="glass"><b>Selection</b><br>Picks the best-looking one</div>
+<div class="glass"><b>Feasibility</b><br>Checks no rule is broken</div>
+<div class="glass"><b>Objective</b><br>Scores the solution</div>
+<div class="glass"><b>Solution</b><br>Says "we are done"</div>
+</div>
+<p class="rv"><b>Coin change:</b> make &#8377;39 from 20, 10, 5, 2, 1 by always taking the biggest coin that fits: 20+10+5+2+2 = <b>5 coins</b>, optimal.</p>
+<div class="warn rv"><b>&#9888; Greedy can fail.</b> With coins {1, 3, 4} and target 6, greedy picks 4+1+1 (three coins) but 3+3 (two coins) is better. Greedy needs a proof, not a hunch.</div>
+
+<h2 class="rv"><span>2</span>Fractional Knapsack Lab</h2>
+<p class="rv">Items A (10 kg, &#8377;60), B (20 kg, &#8377;100), C (30 kg, &#8377;120) have ratios 6, 5 and 4, so greedy takes A first, then B, then C. Drag the capacity and watch the fractions.</p>
+<div class="glass rv">
+<div class="row"><em>Capacity</em><input type="range" id="cap" min="0" max="60" value="50"><b id="capv">50 kg</b></div>
+<div id="kn"></div>
+<div class="msg" id="kt"></div>
+</div>
+<p class="rv">Sorting costs O(n log n) and the selection pass O(n), so the total is <b>O(n log n)</b>. At 50 kg the profit is 60 + 100 + 80 = <b>&#8377;240</b>.</p>
+
+<h2 class="rv"><span>3</span>Kruskal's Algorithm, Step by Step</h2>
+<p class="rv">Edges are sorted by weight. Press <b>Next edge</b>: green-amber means accepted, red dashed means rejected because it would close a cycle.</p>
+<div class="glass rv">
+<svg id="g" viewBox="0 0 360 165" width="480"></svg>
+<div class="msg" id="klog">Press "Next edge" to start</div>
+<div class="msg">Total cost so far: <b style="color:#fbbf24" id="kc">0</b></div>
+<div style="text-align:center"><button onclick="knext()">Next edge &rarr;</button><button class="b2" onclick="kreset()">Reset</button></div>
+</div>
+<p class="rv"><b>Prim's algorithm</b> reaches the same answer differently: it grows one tree from a start vertex, always adding the cheapest edge to a new vertex (from vertex 1: 10, 25, 22, 12, 16, 14). Both give an MST of cost <b>99</b>. Prim takes O(E log V) with a binary heap; Kruskal takes O(E log E) = O(E log V), using union-find to detect cycles.</p>
+
+<h2 class="rv"><span>4</span>Optimal Merge Patterns</h2>
+<p class="rv">Merging files of sizes <i>p</i> and <i>q</i> costs <i>p + q</i>, so always merge the <b>two smallest</b>. For sizes 20, 30, 10, 5, 30:</p>
+<table class="rv">
+<tr><th>Strategy</th><th>Costs</th><th>Total</th></tr>
+<tr><td>Given order</td><td>50 + 60 + 65 + 95</td><td>270</td></tr>
+<tr><td>Greedy (two smallest first)</td><td>15 + 35 + 60 + 95</td><td><b>205</b></td></tr>
+</table>
+
+<h2 class="rv"><span>5</span>Dijkstra's Shortest Paths</h2>
+<p class="rv">For non-negative weights: repeatedly finalise the nearest unvisited vertex, then relax its neighbours. Graph: A-B 3, A-D 8, B-D 5, B-E 6, D-E 3, D-F 2, E-F 1, E-C 9, F-C 3; source A.</p>
+<table class="rv">
+<tr><th>Finalise</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+<tr><td>A</td><td>0</td><td>3</td><td>&infin;</td><td>8</td><td>&infin;</td><td>&infin;</td></tr>
+<tr><td>B</td><td>0</td><td>3</td><td>&infin;</td><td>8</td><td>9</td><td>&infin;</td></tr>
+<tr><td>D</td><td>0</td><td>3</td><td>&infin;</td><td>8</td><td>9</td><td>10</td></tr>
+<tr><td>E</td><td>0</td><td>3</td><td>18</td><td>8</td><td>9</td><td>10</td></tr>
+<tr><td>F</td><td>0</td><td>3</td><td><b>13</b></td><td>8</td><td>9</td><td>10</td></tr>
+</table>
+<p class="rv">Shortest A to C = <b>13</b> via A &rarr; D &rarr; F &rarr; C. The early estimate of 18 was beaten: that is relaxation. Time: <b>O((V+E) log V)</b> with a heap, <b>O(V&sup2;)</b> with an array.</p>
+
+<table class="rv">
+<tr><th>Problem</th><th>Greedy rule</th><th>Time</th></tr>
+<tr><td>Fractional knapsack</td><td>Best profit/weight first</td><td>O(n log n)</td></tr>
+<tr><td>Prim</td><td>Cheapest edge leaving the tree</td><td>O(E log V)</td></tr>
+<tr><td>Kruskal</td><td>Cheapest edge that makes no cycle</td><td>O(E log E)</td></tr>
+<tr><td>Optimal merge</td><td>Merge the two smallest</td><td>O(n log n)</td></tr>
+<tr><td>Dijkstra</td><td>Nearest unvisited vertex</td><td>O((V+E) log V)</td></tr>
+</table>
+
+<h2 class="rv"><span>6</span>Test Yourself</h2>
+<details class="rv"><summary>Capacity 15 kg, items (profit, weight): (10,2), (5,3), (15,5), (7,7), (6,1), (18,4), (3,1). Max profit?</summary><p><b>&asymp; 55.33.</b> By ratio: 6, 10, 18, 3 (weights total 8), then the 15-profit item whole (weight 13), then 2/3 of the (5, 3) item = 3.33.</p></details>
+<details class="rv"><summary>Optimal merge cost for files 5, 10, 20, 30, 30?</summary><p><b>205</b> (15 + 35 + 60 + 95).</p></details>
+<details class="rv"><summary>Why can't Dijkstra handle negative edges?</summary><p>It finalises the nearest vertex assuming no later path can be shorter; a negative edge can break that.</p></details>
+
+<div class="glass rv" style="text-align:center"><b style="color:#fbbf24">That's the series!</b> Divide and conquer splits problems, greedy commits to local choices, and analysis (Part 1) tells you which is better and why.</div>
+
+<div class="nav"><a href="#">Back to the top &uarr;</a></div>
+</div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},dx=$('dx');
+dx.className+=' js';
+window.addEventListener('scroll',function(){var h=document.body.scrollHeight-window.innerHeight;$('prog').style.width=(h>0?window.scrollY/h*100:0)+'%'});
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.1});
+dx.querySelectorAll('.rv').forEach(function(el){io.observe(el)})}else{dx.querySelectorAll('.rv').forEach(function(el){el.classList.add('on')})}
+
+var items=[['A',10,60,'#34d399'],['B',20,100,'#22d3ee'],['C',30,120,'#fbbf24']],kn=$('kn');
+items.forEach(function(it,i){var r=document.createElement('div');r.className='row';r.innerHTML='<em style="color:'+it[3]+'">'+it[0]+' ('+it[1]+'kg)</em><div class="tr"><i id="kb'+i+'" style="background:'+it[3]+'"></i></div><b id="kv'+i+'"></b>';kn.appendChild(r)});
+function kupd(){var left=+$('cap').value,tot=0;$('capv').textContent=left+' kg';
+items.forEach(function(it,i){var take=Math.min(it[1],left)/it[1];left-=Math.min(it[1],left);tot+=take*it[2];$('kb'+i).style.width=take*100+'%';$('kv'+i).textContent=Math.round(take*100)+'% = '+Math.round(take*it[2]*10)/10})
+$('kt').textContent='Total profit: '+Math.round(tot*100)/100}
+$('cap').oninput=kupd;kupd();
+
+var P={1:[110,25],2:[230,25],3:[300,80],4:[230,135],5:[110,135],6:[45,80],7:[170,80]},E=[[10,1,6],[12,3,4],[14,2,7],[16,2,3],[18,4,7],[22,4,5],[24,5,7],[25,5,6],[28,1,2]],NS='http://www.w3.org/2000/svg',svg=$('g'),lines=[],par,ki,kcost,kacc;
+function mk(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);svg.appendChild(e);return e}
+E.forEach(function(e){var a=P[e[1]],b=P[e[2]];lines.push(mk('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'#4b5563','stroke-width':2}))});
+E.forEach(function(e){var a=P[e[1]],b=P[e[2]],t=mk('text',{x:(a[0]+b[0])/2,y:(a[1]+b[1])/2-5,fill:'#c4b5fd','font-size':12,'font-weight':700,'text-anchor':'middle'});t.textContent=e[0]});
+for(var v in P){mk('circle',{cx:P[v][0],cy:P[v][1],r:15,fill:'#6d28d9'});var t=mk('text',{x:P[v][0],y:P[v][1]+5,fill:'#fff','font-size':13,'font-weight':700,'text-anchor':'middle'});t.textContent=v}
+function fd(x){while(par[x]!==x)x=par[x];return x}
+window.kreset=function(){par={};for(var v in P)par[v]=+v;ki=0;kcost=0;kacc=0;lines.forEach(function(l){l.setAttribute('stroke','#4b5563');l.setAttribute('stroke-width',2);l.removeAttribute('stroke-dasharray')});$('kc').textContent=0;$('klog').textContent='Press "Next edge" to start'};
+window.knext=function(){if(kacc===6||ki===E.length)return;var e=E[ki],l=lines[ki],a=fd(e[1]),b=fd(e[2]);ki++;
+if(a!==b){par[a]=b;kcost+=e[0];kacc++;l.setAttribute('stroke','#fbbf24');l.setAttribute('stroke-width',5);$('klog').textContent='Edge '+e[1]+'-'+e[2]+' (weight '+e[0]+'): ACCEPTED';$('kc').textContent=kcost;if(kacc===6)$('klog').textContent='All 7 vertices connected. MST complete, cost = '+kcost}
+else{l.setAttribute('stroke','#f87171');l.setAttribute('stroke-width',3);l.setAttribute('stroke-dasharray','5 4');$('klog').textContent='Edge '+e[1]+'-'+e[2]+' (weight '+e[0]+'): REJECTED, it would form a cycle'}};
+kreset();
+})();
+</script>

@@ -1,0 +1,158 @@
+<!-- DAA Part 2, interactive flagship. Paste into Blogger HTML view. Title: "Divide and Conquer: Watch Algorithms Race (Interactive)" -->
+<style>
+.dx{position:relative;background:#0b0b1f;color:#e5e7eb;font:15.5px/1.75 'Segoe UI',Roboto,Arial,sans-serif;padding:18px;border-radius:22px;overflow:hidden}
+.dx *{box-sizing:border-box}
+.dx #prog{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,#22d3ee,#a78bfa,#f472b6);z-index:99}
+.dx.js .rv{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
+.dx.js .rv.on{opacity:1;transform:none}
+.dx .hero{position:relative;text-align:center;padding:54px 16px 44px;border-radius:18px;background:radial-gradient(circle at 20% 20%,#4c1d95 0,transparent 45%),radial-gradient(circle at 80% 30%,#9d174d 0,transparent 45%),radial-gradient(circle at 50% 100%,#0e7490 0,transparent 50%),#0b0b1f;border:1px solid #312e81;animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 50px rgba(167,139,250,.35)}}
+.dx .hero small{color:#22d3ee;letter-spacing:3px;font-weight:700;font-size:12px}
+.dx .hero h1{font-size:40px;line-height:1.15;margin:12px 0;background:linear-gradient(90deg,#22d3ee,#a78bfa,#f472b6,#22d3ee);background-size:300%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 6s linear infinite}
+@keyframes flow{to{background-position:300%}}
+.dx .hero p{margin:0 auto;max-width:520px;color:#c4b5fd}
+.dx h2{font-size:25px;margin:46px 0 12px;color:#fff}
+.dx h2 span{display:inline-block;background:linear-gradient(135deg,#22d3ee,#a78bfa);color:#0b0b1f;font-weight:800;border-radius:10px;padding:0 10px;margin-right:10px}
+.dx p{color:#d1d5db}
+.dx code{background:#1e1b4b;color:#67e8f9;padding:1px 6px;border-radius:5px;font:14px Consolas,monospace}
+.dx .glass{background:rgba(255,255,255,.05);border:1px solid rgba(167,139,250,.35);border-radius:16px;padding:16px;margin:14px 0;backdrop-filter:blur(6px)}
+.dx .grid{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+.dx .grid .glass{flex:1 1 170px;margin:0;transition:.3s}
+.dx .grid .glass:hover{transform:translateY(-6px) rotate(-1deg);border-color:#22d3ee;box-shadow:0 10px 30px rgba(34,211,238,.25)}
+.dx .grid b{color:#22d3ee;font-size:18px}
+.dx .formula{text-align:center;font-size:21px;font-weight:700;color:#fbbf24;border:2px dashed #a78bfa;border-radius:14px;padding:14px;margin:16px 0}
+.dx pre{background:#050510;border:1px solid #312e81;border-radius:12px;padding:14px;margin:12px 0;color:#e5e7eb;font:14px Consolas,monospace;overflow-x:auto}
+.dx .k{color:#c4b5fd}.dx .c{color:#6b7280;font-style:italic}.dx .n{color:#fbbf24}
+.dx .arena{height:190px;display:flex;align-items:flex-end;gap:3px;padding:10px;background:#050510;border-radius:12px;border:1px solid #312e81}
+.dx .arena i{flex:1;border-radius:4px 4px 0 0;transition:height .05s}
+.dx button{border:0;cursor:pointer;font-weight:700;color:#0b0b1f;padding:9px 18px;margin:4px 4px 4px 0;border-radius:30px;background:linear-gradient(135deg,#22d3ee,#a78bfa);transition:.2s}
+.dx button:hover{transform:scale(1.06);box-shadow:0 0 18px rgba(167,139,250,.6)}
+.dx button.b2{background:linear-gradient(135deg,#f472b6,#fbbf24)}
+.dx .score{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:14px}
+.dx .score span{background:#1e1b4b;border-radius:20px;padding:3px 14px}
+.dx .score b{color:#fbbf24}
+.dx .big{font-size:20px;color:#fff;text-align:center;margin:10px 0}
+.dx .big b{color:#22d3ee}
+.dx table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid #312e81;border-radius:12px;overflow:hidden;margin:14px 0}
+.dx th{background:#312e81;color:#fff;padding:10px;text-align:left}
+.dx td{padding:9px 10px;border-top:1px solid #1e1b4b;color:#d1d5db}
+.dx tr:nth-child(even) td{background:rgba(255,255,255,.03)}
+.dx details{background:rgba(255,255,255,.05);border:1px solid rgba(167,139,250,.35);border-radius:12px;margin:10px 0;padding:10px 16px}
+.dx summary{cursor:pointer;font-weight:700;color:#67e8f9}
+.dx .nav{text-align:right;margin-top:34px}
+.dx .nav a{display:inline-block;background:linear-gradient(135deg,#f472b6,#a78bfa);color:#0b0b1f;font-weight:800;padding:12px 28px;border-radius:30px;text-decoration:none}
+@media(prefers-reduced-motion:reduce){.dx *{animation:none!important;transition:none!important}}
+</style>
+
+<div class="dx" id="dx">
+<div id="prog"></div>
+
+<div class="hero">
+<small>DAA SERIES &middot; PART 2 &middot; INTERACTIVE</small>
+<h1>Divide and Conquer</h1>
+<p>Don't just read about algorithms. Race them, play against them and watch them think.</p>
+</div>
+
+<h2 class="rv"><span>1</span>The Big Idea</h2>
+<div class="grid rv">
+<div class="glass"><b>Divide</b><br>Split the problem into smaller subproblems</div>
+<div class="glass"><b>Conquer</b><br>Solve each one, usually recursively</div>
+<div class="glass"><b>Combine</b><br>Stitch the answers into one</div>
+</div>
+<div class="formula rv">T(n) = a &middot; T(n/b) + f(n)</div>
+<p class="rv"><i>a</i> = number of subproblems, <i>b</i> = how much the input shrinks, <i>f(n)</i> = cost of dividing and combining. Pros: beats brute force, cache-friendly, parallelises well. Cons: recursion eats stack memory.</p>
+
+<h2 class="rv"><span>2</span>Game: Can I Guess Your Number?</h2>
+<div class="glass rv">
+<p>Think of any number from <b>1 to 100</b> and keep it secret. I'll guess using <b>binary search</b>: always the middle of what's left.</p>
+<div class="big" id="gm"></div>
+<div style="text-align:center"><button onclick="gans(1)">Higher &uarr;</button><button class="b2" onclick="gans(-1)">Lower &darr;</button><button onclick="gans(0)">Correct!</button><button class="b2" onclick="gstart()">Restart</button></div>
+</div>
+<p class="rv">Every answer halves the possibilities, so 100 numbers need at most 7 guesses. Formally <code>T(n) = T(n/2) + O(1)</code>, which is <b>O(log n)</b>. A million items need about 20.</p>
+<pre class="rv"><span class="k">int</span> binarysearch(data[], low, high, target) {
+    <span class="k">if</span> (high &gt;= low) {
+        mid = (low + high) / 2;
+        <span class="k">if</span> (data[mid] == target) <span class="k">return</span> mid;
+        <span class="k">if</span> (data[mid] &gt;  target) <span class="k">return</span> binarysearch(data, low, mid-1, target);
+        <span class="k">return</span> binarysearch(data, mid+1, high, target);
+    }
+    <span class="k">return</span> -1;
+}</pre>
+
+<h2 class="rv"><span>3</span>The Sorting Arena</h2>
+<div class="glass rv">
+<p>Press a button to shuffle, then watch each algorithm sort the same kind of data. The scoreboard counts <b>comparisons</b>, the real cost of sorting.</p>
+<div class="arena" id="arena"></div>
+<div style="margin-top:8px"><button class="b2" onclick="shuf()">Shuffle</button><button onclick="run('Bubble')">Bubble sort</button><button onclick="run('Merge')">Merge sort</button><button onclick="run('Quick')">Quick sort</button></div>
+<div class="score"><span>Live comparisons: <b id="cnt">0</b></span><span>Bubble: <b id="r-Bubble">-</b></span><span>Merge: <b id="r-Merge">-</b></span><span>Quick: <b id="r-Quick">-</b></span></div>
+</div>
+<p class="rv"><b>Merge sort</b> splits in half, sorts each half, then merges like zipping two sorted decks: <b>O(n log n)</b> always, with <b>O(n)</b> extra space. <b>Quick sort</b> picks a pivot, puts smaller items left and larger right, then recurses.</p>
+<table class="rv">
+<tr><th>Quick sort case</th><th>What happens</th><th>Time</th></tr>
+<tr><td>Best</td><td>Pivot near the median: T(n) = 2T(n/2) + O(n)</td><td>O(n log n)</td></tr>
+<tr><td>Average</td><td>Usually good in practice</td><td>&Theta;(n log n)</td></tr>
+<tr><td>Worst</td><td>Pivot always smallest or largest, e.g. sorted input with a first-element pivot: T(n) = T(n-1) + O(n)</td><td>O(n&sup2;)</td></tr>
+</table>
+
+<h2 class="rv"><span>4</span>Min/Max and Strassen</h2>
+<div class="grid rv">
+<div class="glass"><b>Min/Max</b><br>Find min and max of each half recursively, then compare. <code>T(n) = 2T(n/2) + O(1)</code> = <b>O(n)</b>. Try <code>[3,5,1,8,2]</code>: answer (1, 8).</div>
+<div class="glass"><b>Strassen</b><br>Naive block multiplication needs <b>8</b> sub-multiplications; Strassen needs <b>7</b>. <code>T(n) = 7T(n/2) + O(n&sup2;)</code> = <b>O(n<sup>2.81</sup>)</b>.</div>
+</div>
+<pre class="rv">P1=(a+d)(e+h)  P2=(c+d)e  P3=a(f-h)  P4=d(g-e)  P5=(a+b)h  P6=(c-a)(e+f)  P7=(b-d)(g+h)
+top-left = P1+P4-P5+P7    top-right = P3+P5
+bottom-left = P2+P4       bottom-right = P1-P2+P3+P6
+
+A=[[1,2],[3,4]]  B=[[5,6],[7,8]]   P = 65, 35, -2, 8, 24, 22, -30
+result = <span class="n">[[19, 22], [43, 50]]</span></pre>
+
+<h2 class="rv"><span>5</span>Cheat Sheet</h2>
+<table class="rv">
+<tr><th>Algorithm</th><th>Time</th><th>Extra space</th></tr>
+<tr><td>Binary search</td><td>O(log n)</td><td>O(1) iterative</td></tr>
+<tr><td>Min / max</td><td>O(n)</td><td>O(log n) stack</td></tr>
+<tr><td>Merge sort</td><td>O(n log n) always</td><td>O(n)</td></tr>
+<tr><td>Quick sort</td><td>O(n log n) avg, O(n&sup2;) worst</td><td>O(log n) stack</td></tr>
+<tr><td>Strassen</td><td>O(n<sup>2.81</sup>)</td><td>O(n&sup2;)</td></tr>
+</table>
+
+<h2 class="rv"><span>6</span>Test Yourself</h2>
+<details class="rv"><summary>What is the most guesses binary search needs for 100 numbers?</summary><p><b>7</b>, since log&#8322;100 is about 6.6.</p></details>
+<details class="rv"><summary>Why is merge sort O(n log n) in every case?</summary><p>There are log n levels of splitting, and each level does O(n) merging work, whatever the input order.</p></details>
+<details class="rv"><summary>Run bubble sort and merge sort. Why is the gap so big?</summary><p>Bubble sort is O(n&sup2;) and merge sort is O(n log n), and the gap widens as n grows.</p></details>
+
+<div class="nav"><a href="#">Next: The Greedy Method &rarr;</a></div>
+</div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},dx=$('dx');
+dx.className+=' js';
+window.addEventListener('scroll',function(){var h=document.body.scrollHeight-window.innerHeight;$('prog').style.width=(h>0?window.scrollY/h*100:0)+'%'});
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{threshold:.1});
+dx.querySelectorAll('.rv').forEach(function(el){io.observe(el)})}else{dx.querySelectorAll('.rv').forEach(function(el){el.classList.add('on')})}
+
+var lo,hi,g,mid;
+window.gstart=function(){lo=1;hi=100;g=0;gnext()};
+function gnext(){if(lo>hi){$('gm').textContent='Hmm, your answers do not add up. Restart?';return}mid=Math.floor((lo+hi)/2);g++;$('gm').innerHTML='Is your number <b>'+mid+'</b>? (guess #'+g+')'}
+window.gans=function(a){if(lo>hi)return;if(a===0){$('gm').innerHTML='Got it in <b>'+g+'</b> guesses!';return}if(a>0){lo=mid+1}else{hi=mid-1}gnext()};
+gstart();
+
+var N=24,arr=[],busy=false,frames,cmp;
+function draw(hl,done){var ar=$('arena');ar.innerHTML='';arr.forEach(function(v,i){var b=document.createElement('i');b.style.height=(v/N*100)+'%';b.style.background=hl.indexOf(i)>=0?'#fbbf24':done?'#34d399':'linear-gradient(#a78bfa,#6d28d9)';ar.appendChild(b)})}
+window.shuf=function(){if(busy)return;arr=[];for(var i=1;i<=N;i++)arr.push(i);for(var j=N-1;j>0;j--){var k=Math.floor(Math.random()*(j+1)),t=arr[j];arr[j]=arr[k];arr[k]=t}$('cnt').textContent=0;draw([],false)};
+function f(a,h){frames.push([a.slice(),h,cmp])}
+function bubble(a){for(var i=0;i!==N-1;i++){for(var j=0;j!==N-1-i;j++){cmp++;f(a,[j,j+1]);if(a[j]>a[j+1]){var t=a[j];a[j]=a[j+1];a[j+1]=t;f(a,[j,j+1])}}}}
+function ms(a,l,h){if(l>=h)return;var m=Math.floor((l+h)/2);ms(a,l,m);ms(a,m+1,h);var L=a.slice(l,m+1),R=a.slice(m+1,h+1),i=0,j=0,k=l;
+while(i!==L.length&&j!==R.length){cmp++;if(L[i]<=R[j]){a[k++]=L[i++]}else{a[k++]=R[j++]}f(a,[k-1])}
+while(i!==L.length){a[k++]=L[i++];f(a,[k-1])}while(j!==R.length){a[k++]=R[j++];f(a,[k-1])}}
+function qs(a,lo2,hi2){if(lo2>=hi2)return;var p=a[lo2],i=lo2+1,j=hi2,t;
+while(i<=j){while(i<=j&&(cmp++,p>=a[i]))i++;while(i<=j&&(cmp++,a[j]>=p))j--;if(i<j){t=a[i];a[i]=a[j];a[j]=t;f(a,[i,j]);i++;j--}}
+t=a[lo2];a[lo2]=a[j];a[j]=t;f(a,[lo2,j]);qs(a,lo2,j-1);qs(a,j+1,hi2)}
+window.run=function(name){if(busy)return;busy=true;frames=[];cmp=0;var a=arr.slice();
+if(name==='Bubble')bubble(a);else if(name==='Merge')ms(a,0,N-1);else qs(a,0,N-1);
+f(a,[]);var t=0,timer=setInterval(function(){var fr=frames[t++];arr=fr[0];draw(fr[1],false);$('cnt').textContent=fr[2];
+if(t===frames.length){clearInterval(timer);draw([],true);$('r-'+name).textContent=cmp;busy=false}},16)};
+shuf();
+})();
+</script>
